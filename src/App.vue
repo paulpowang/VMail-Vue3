@@ -1,6 +1,5 @@
 <template>
   <h1>VMail Inbox</h1>
-  <MailTable />
   <Suspense>
     <template #default>
       <MailTable />
