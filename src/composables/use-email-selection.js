@@ -11,6 +11,14 @@ const useEmailSelection = () => {
         selectedEmails.add(email);
       }
     },
+    clear() {
+      selectedEmails.clear();
+    },
+    addMultiple(newEmails) {
+      newEmails.forEach((email) => {
+        selectedEmails.add(email);
+      });
+    },
   };
   return emailSelection;
 };
