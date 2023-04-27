@@ -8,9 +8,25 @@
 </template>
 
 <script>
+import useKeydown from "../composables/use-keydown";
 export default {
   name: "ModalView",
   setup(props, { emit }) {
+    useKeydown([
+      {
+        key: "Escape",
+        fn: () => {
+          emit("closeModal");
+        },
+      },
+      {
+        key: "Enter",
+        fn: () => {
+          console.log("Enter key down");
+        },
+      },
+    ]);
+
     return { emit };
   },
 };
