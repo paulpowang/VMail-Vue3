@@ -1,5 +1,13 @@
 <template>
   <div class="email-display">
+    <div>
+      <button @click="toggleArchive">
+        {{ email.archived ? "Move to Inbox (e)" : "Archive (e)" }}
+      </button>
+      <button @click="toggleRead">{{ email.read ? "Mark Unread (r)" : "Mark Read (r)" }}</button>
+      <button @click="goNewer">Newer (k)</button>
+      <button @click="goOlder">Older (j)</button>
+    </div>
     <h2>
       Subject: <strong>{{ email.subject }}</strong>
     </h2>
@@ -13,6 +21,8 @@
 <script>
 import { format } from "date-fns";
 import marked from "marked";
+import useKeydown from "../composables/use-keydown";
+
 export default {
   name: "MailView",
   props: {
@@ -21,10 +31,42 @@ export default {
       required: true,
     },
   },
-  setup() {
+  setup(props, { emit }) {
+    let toggleRead = () => {
+      emit("changeEmail", { toggleRead: true, save: true });
+    };
+    let toggleArchive = () => {
+      emit("changeEmail", { toggleArchive: true, save: true, closeModal: true });
+    };
+    let goNewer = () => {
+      emit("changeEmail", { changeIndex: -1 });
+    };
+    let goOlder = () => {
+      emit("changeEmail", { changeIndex: 1 });
+    };
+    let goNewerAndArchive = () => {
+      emit("changeEmail", { toggleArchive: true, save: true, changeIndex: -1 });
+    };
+    let goOlderAndArchive = () => {
+      emit("changeEmail", { toggleArchive: true, save: true, changeIndex: 1 });
+    };
+
+    useKeydown([
+      { key: "r", fn: toggleRead },
+      { key: "e", fn: toggleArchive },
+      { key: "k", fn: goNewer },
+      { key: "j", fn: goOlder },
+      { key: "[", fn: goNewerAndArchive },
+      { key: "]", fn: goOlderAndArchive },
+    ]);
+
     return {
       format,
       marked,
+      toggleRead,
+      toggleArchive,
+      goNewer,
+      goOlder,
     };
   },
 };
