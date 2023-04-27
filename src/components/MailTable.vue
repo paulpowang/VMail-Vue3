@@ -49,7 +49,7 @@ export default {
 
     return {
       format,
-      emails: emails,
+      emails: ref(emails),
       openedEmail: ref(null),
       emailSelection: useEmailSelection(),
     };
