@@ -19,18 +19,21 @@
       <td><button @click="archiveEmail(email)">Archive</button></td>
     </tr>
   </table>
-  <MailView v-if="openedEmail" :email="openedEmail" />
+  <ModalView v-if="openedEmail" @closeModal="openedEmail = null">
+    <MailView :email="openedEmail" />
+  </ModalView>
 </template>
 
 <script>
 import { format } from "date-fns";
 import MailView from "./MailView.vue";
+import ModalView from "./ModalView.vue";
 import { ref } from "vue";
 import axios from "axios";
 
 export default {
   name: "MailTable",
-  components: { MailView },
+  components: { MailView, ModalView },
   async setup() {
     let response = await axios.get("http://localhost:3000/emails");
 
